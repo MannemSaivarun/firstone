@@ -69,3 +69,6 @@ newIdTxt = document.createTextNode("hi this is new id");
 //appendchild
 newId.appendChild(newIdTxt);
 
+container = document.querySelector("header .container")
+h1 = document.querySelector("header h1");
+container.insertBefore(newId, h1)
