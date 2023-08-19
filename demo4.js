@@ -11,13 +11,15 @@ form.addEventListener('submit', (e)=>{
     var newItem = document.getElementById('item').value;
     var newItem1 = document.getElementById('item1').value;
 
-    localStorage.setItem('newItem','newItem1');
+    //localStorage.setItem(newItem,newItem1);
 
     let myObj = {
-      name: newItem,
-      disc: newItem1
+      'name': newItem,
+      'disc': newItem1
     }
-    localStorage.setItem('myObj',myObj);
+    
+
+    localStorage.setItem(newItem1, JSON.stringify(myObj));
   
     // Create new li element
     var li = document.createElement('li');
