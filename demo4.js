@@ -10,6 +10,8 @@ form.addEventListener('submit', (e)=>{
     // Get input value
     var newItem = document.getElementById('item').value;
     var newItem1 = document.getElementById('item1').value;
+
+    localStorage.setItem('newItem','newItem1');
   
     // Create new li element
     var li = document.createElement('li');
@@ -40,6 +42,8 @@ form.addEventListener('submit', (e)=>{
   
     // Append li to list
     itemList.appendChild(li);
+
+
   });
 
 
