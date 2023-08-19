@@ -12,6 +12,12 @@ form.addEventListener('submit', (e)=>{
     var newItem1 = document.getElementById('item1').value;
 
     localStorage.setItem('newItem','newItem1');
+
+    let myObj = {
+      name: newItem,
+      disc: newItem1
+    }
+    localStorage.setItem('myObj',myObj);
   
     // Create new li element
     var li = document.createElement('li');
