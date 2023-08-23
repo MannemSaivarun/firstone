@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="savetolocalstorage(event)">
+        <label>Choose expense</label>
+        <input type="number" name="expense" id="expensetag" required/>
+
+        <label>Choose description</label>
+        <input type="text" name="description" id="descriptiontag" required/>
+        
+        <label>choose a category</label>
+        <select id="cars" name="category">
+            <option value="fuel">fuel</option>
+            <option value="food">food</option>
+            <option value="movie">movie</option>   
+        </select>
+        <button>Submit</button>
+
+    </form>
+    <ul id="listOfItems"></ul>
+    <script>
+        function savetolocalstorage(event){
+            event.preventDefault();
+            const name = event.target.expense.value;
+            const email = event.target.description.value;
+            const phonenumber = event.target.category.value;
+            const obj={
+                name,
+                email,
+                phonenumber
+            }
+            localStorage.setItem(obj.email,JSON.stringify(obj));
+            displayonscreen(obj);
+        }
+        function displayonscreen(obj){
+            const parentelem = document.getElementById('listOfItems');
+            const childelem = document.createElement('li')
+            childelem.textContent = obj.name +  '-' + obj.phonenumber +'-' + obj.email;
+            
+            const deletebtn = document.createElement('input');
+            deletebtn.type ='button'
+            deletebtn.value = "Delete";
+           
+            
+            deletebtn.onclick = () => {
+                localStorage.removeItem(obj.email);
+                parentelem.removeChild(childelem);
+            }
+            const editbtn = document.createElement('input');
+            editbtn.type='button'
+            editbtn.value= 'Edit'
+            
+            editbtn.onclick = () =>{
+                localStorage.removeItem(obj.email);
+                parentelem.removeChild(childelem);
+                document.getElementById('expensetag').value = obj.name;
+                document.getElementById('descriptiontag').value = obj.email;
+                document.getElementById('cars').value = obj.phonenumber;
+
+            }
+
+            childelem.appendChild(deletebtn);
+            childelem.appendChild(editbtn)
+            parentelem.appendChild(childelem);
+
+        }
+    </script>
+</body>
+</html>
