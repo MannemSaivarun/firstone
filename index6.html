@@ -40,9 +40,22 @@
                 console.log(res)
             })
             .catch((err)=>console.log(err))
-            //localStorage.setItem(obj.email,JSON.stringify(obj));
-            //displayonscreen(obj);
+            // localStorage.setItem(obj.email,JSON.stringify(obj));
+            // displayonscreen(obj);
+            
         }
+        window.addEventListener("DOMContentLoaded",()=>{
+                axios.get("https://crudcrud.com/api/aec54c1d71e34c5a84fb08e95d2e7ad4/Appointmentdata")
+                .then((res)=>{
+                    console.log(res)
+                    for(var i=0;i<res.data.length;i++){
+                        displayonscreen(res.data[i])
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+        })
         function displayonscreen(obj){
             const parentelem = document.getElementById('listOfItems');
             const childelem = document.createElement('li')
@@ -75,7 +88,7 @@
             parentelem.appendChild(childelem);
 
         }
-        // window.addEventListener("DOMContentonLoaded",() => {
+        // window.addEventListener("DOMContentLoaded",() => {
         //     const localStorageObj = localStorage;
         //     const localStoragekeys = Object.keys(localStorageObj)
         //     for(var i=0; i<localStoragekeys.length;i++){
