@@ -34,10 +34,10 @@
                 email,
                 phonenumber
             }
-            axios.post("https://crudcrud.com/api/aec54c1d71e34c5a84fb08e95d2e7ad4/Appointmentdata",obj)
+            axios.post("https://crudcrud.com/api/f473abf0f2cf4d60a56e838c287a61b0/Appointmentdata",obj)
             .then((res)=>{
                 displayonscreen(res.data)
-                console.log(res)
+                //console.log(res)
             })
             .catch((err)=>console.log(err))
             // localStorage.setItem(obj.email,JSON.stringify(obj));
@@ -45,9 +45,9 @@
             
         }
         window.addEventListener("DOMContentLoaded",()=>{
-                axios.get("https://crudcrud.com/api/aec54c1d71e34c5a84fb08e95d2e7ad4/Appointmentdata")
+                axios.get("https://crudcrud.com/api/f473abf0f2cf4d60a56e838c287a61b0/Appointmentdata")
                 .then((res)=>{
-                    console.log(res)
+                    //console.log(res)
                     for(var i=0;i<res.data.length;i++){
                         displayonscreen(res.data[i])
                     }
@@ -59,6 +59,7 @@
         function displayonscreen(obj){
             const parentelem = document.getElementById('listOfItems');
             const childelem = document.createElement('li')
+            childelem.setAttribute("id",obj._id);
             childelem.textContent = obj.name +  '-' + obj.phonenumber +'-' + obj.email;
             
             const deletebtn = document.createElement('input');
@@ -67,8 +68,14 @@
            
             
             deletebtn.onclick = () => {
-                localStorage.removeItem(obj.email);
-                parentelem.removeChild(childelem);
+                
+                axios.delete(`https://crudcrud.com/api/f473abf0f2cf4d60a56e838c287a61b0/Appointmentdata/${obj._id}`)
+                .then((res)=>{
+                    parentelem.removeChild(childelem);
+                   console.log(obj._id)
+                })
+                .catch((err)=>console.log(err));
+                
             }
             const editbtn = document.createElement('input');
             editbtn.type='button'
