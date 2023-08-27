@@ -1,0 +1,128 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>TODO</title>
+</head>
+<body>
+    <h2 class="title">Add Items</h2>
+    <form id="addForm" class="form-inline mb-3" onsubmit="savetocrudcrud(event)">
+      <input type="text" class="form-control mr-2" id="item1" placeholder="TODO-Name">
+      <input type="text" class="form-control mr-2" id="item2"placeholder="description">
+      <button>Add Item</button>
+    </form>
+    <h2 class="title">Todo-Remaning</h2>
+    <ul id="list-of-items1" class="list-group"> </ul>
+    <h2 class="title">Todos done</h2>
+    <ul id="list-of-items2" class="list-group"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+        function savetocrudcrud(event){
+            event.preventDefault();
+            const todoName = document.getElementById("item1").value;
+            const description = document.getElementById("item2").value;
+            var obj ={
+                todoName,
+                description
+            }
+            document.getElementById("item1").value = "";
+            document.getElementById("item2").value = "";
+            axios.post("https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData",obj)
+            .then((res)=>{
+                //console.log(res.data)
+                AddtotodoRemaining(res.data)
+            })
+            .catch((err)=>console.log(err))
+        }
+        
+
+        function AddtotodoRemaining(userdata){
+            const parentelem = document.getElementById('list-of-items1');
+            const childelem = document.createElement('li')
+            childelem.setAttribute("id",userdata._id);
+            childelem.textContent = userdata.todoName +  '-' + userdata.description;
+            
+            const tickbtn = document.createElement('input');
+            tickbtn.type ='button'
+            tickbtn.value = "✔";
+            const todoName = userdata.todoName;
+            const description = userdata.description;
+            var obj ={
+                todoName,
+                description
+            }
+            
+            tickbtn.onclick =() =>{
+                axios.post("https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData1",obj)
+                .then((res)=>{
+                    AddtoTodoDone(userdata);
+
+                })
+                .catch((err)=>console.log("err in post"));
+
+                axios.delete(`https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData/${userdata._id}`)
+                .then((res)=>{
+                    parentelem.removeChild(childelem);
+                    //console.log(userdata._id)
+                })
+                .catch((err)=>console.log(err));  
+                
+             }
+            const deltebtn = document.createElement('input');
+            deltebtn.type ='button'
+            deltebtn.value = "X";
+            deltebtn.onclick =() =>{
+                axios.delete(`https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData/${userdata._id}`)
+                .then((res)=>{
+                    parentelem.removeChild(childelem);
+                    //console.log(userdata._id)
+                })
+                .catch((err)=>console.log(err));
+
+            }
+            childelem.appendChild(tickbtn);
+            childelem.appendChild(deltebtn);
+            parentelem.appendChild(childelem);
+        }
+
+        function AddtoTodoDone(userData){
+            const Parentelem = document.getElementById('list-of-items2');
+            const Childelem = document.createElement('li')
+            Childelem.setAttribute("id",userData._id);
+            Childelem.textContent = userData.todoName +  '-' + userData.description;
+            const donebtn =document.createElement('input');
+            donebtn.type="button";
+            donebtn.value="Done"
+            Childelem.appendChild(donebtn);
+            Parentelem.appendChild(Childelem);
+        }
+        window.addEventListener("DOMContentLoaded",()=>{
+            axios.get("https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData")
+                .then((res)=>{
+                    
+                    for(var i=0;i<res.data.length;i++){
+                        AddtotodoRemaining(res.data[i])
+                       // AddtoTodoDone(res.data[i])
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+                axios.get("https://crudcrud.com/api/3794b690951041dc8447104dd502113b/todoData1")
+                .then((res)=>{
+                    
+                    for(var i=0;i<res.data.length;i++){
+                        //AddtotodoRemaining(res.data[i])
+                        AddtoTodoDone(res.data[i])
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+        })
+
+    </script>
+</body>
+</html>
